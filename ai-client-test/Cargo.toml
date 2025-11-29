@@ -1,0 +1,23 @@
+[package]
+name = "ai-client-test"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+ai-client-common.workspace = true
+ai-client-openai.workspace = true
+ai-client-qianwen.workspace = true
+
+reqwest.workspace = true
+schemars.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+snafu.workspace = true
+
+tokio.workspace = true
+
+[dev-dependencies]

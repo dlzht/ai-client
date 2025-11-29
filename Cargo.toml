@@ -1,0 +1,37 @@
+[workspace]
+members = [
+    "ai-client-common",
+    "ai-client-openai",
+    "ai-client-python",
+    "ai-client-qianwen",
+    "ai-client-test"
+]
+resolver = "3"
+
+[workspace.lints]
+
+[workspace.package]
+name = "ai-client"
+version = "0.1.0"
+edition = "2024"
+license = "Apache-2.0"
+
+[workspace.dependencies]
+ai-client-common = { path = "ai-client-common" }
+ai-client-openai = { path = "ai-client-openai" }
+ai-client-qianwen = { path = "ai-client-qianwen" }
+
+reqwest = { version = "0.12", features = ["json", "stream"] }
+schemars = "1.1.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0", features = ["std"] }
+serde_repr = "0.1.20"
+snafu = "0.8.5"
+tokio = { version = "1.28", features = ["full"]}
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+panic = "abort"
+strip = true

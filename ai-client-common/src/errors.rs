@@ -27,6 +27,13 @@ pub enum Error {
     backtrace: Backtrace,
   },
 
+  #[snafu(display("Invalid http header: {}", header))]
+  ReqwestHeader {
+    header: String,
+    #[snafu(implicit)]
+    location: Location,
+  },
+
   #[snafu(display("Failed to serialize JSON"))]
   SerializeJson {
     #[snafu(source)]

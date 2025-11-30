@@ -2,7 +2,7 @@ use ai_client_common::common::MessageRole;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct QianWenChatData {
+pub struct ChatCompletionRes {
   #[serde(rename = "id")]
   id: String,
 
@@ -88,7 +88,6 @@ pub struct UsageData {
 pub struct CompletionTokensDetails {
   // #[serde(rename = "accepted_prediction_tokens")]
   // pub accepted_prediction_tokens: i32,
-
   #[serde(rename = "audio_tokens")]
   pub audio_tokens: Option<i32>,
 
@@ -97,7 +96,6 @@ pub struct CompletionTokensDetails {
 
   #[serde(rename = "text_tokens")]
   pub text_tokens: Option<i32>,
-
   // #[serde(rename = "rejected_prediction_tokens")]
   // pub rejected_prediction_tokens: i32,
 }
@@ -222,7 +220,6 @@ pub struct ChoiceFunction {
 pub struct ChoiceLogProb {
   #[serde(rename = "content")]
   content: Option<Vec<ChoiceLogProbData>>,
-
   // #[serde(rename = "refusal")]
   // refusal: Option<Vec<ChunkChoiceLogProbData>>,
 }
@@ -285,18 +282,17 @@ pub enum QianWenChatRes<T> {
   Success(T),
 }
 
-
 #[cfg(test)]
 mod test {
-  use crate::chat::response::{QianWenChatChunkData, QianWenChatData, QianWenChatRes};
+  use crate::chat::response::{ChatCompletionRes, QianWenChatChunkData, QianWenChatRes};
 
   #[test]
   fn test_deserialize_res() {
     let json0 = "{\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"我是阿里云开发的一款超大规模语言模型，我叫通义千问。\"},\"finish_reason\":\"stop\",\"index\":0,\"logprobs\":null}],\"object\":\"chat.completion\",\"usage\":{\"prompt_tokens\":3019,\"completion_tokens\":104,\"total_tokens\":3123,\"prompt_tokens_details\":{\"cached_tokens\":2048}},\"created\":1735120033,\"system_fingerprint\":null,\"model\":\"qwen-plus\",\"id\":\"chatcmpl-6ada9ed2-7f33-9de2-8bb0-78bd4035025a\"}";
-    assert!(serde_json::from_str::<QianWenChatRes<QianWenChatData>>(json0).is_ok());
+    assert!(serde_json::from_str::<QianWenChatRes<ChatCompletionRes>>(json0).is_ok());
 
     let json1 = "{\"error\": {\"message\": \"you must provide a messages parameter\",\"type\": \"invalid_request_error\",\"param\": \"message\",\"code\": \"missing_required_parameter\"},\"request_id\": \"chatcmpl-026b188f-77c4-453d-a64f-60e7b444faa7\"}";
-    assert!(serde_json::from_str::<QianWenChatRes<QianWenChatData>>(json1).is_ok());
+    assert!(serde_json::from_str::<QianWenChatRes<ChatCompletionRes>>(json1).is_ok());
 
     let json2 = "{\"id\":\"chatcmpl-e30f5ae7-3063-93c4-90fe-beb5f900bd57\",\"choices\":[{\"delta\":{\"content\":\"\",\"function_call\":null,\"refusal\":null,\"role\":\"assistant\",\"tool_calls\":null},\"finish_reason\":null,\"index\":0,\"logprobs\":null}],\"created\":1735113344,\"model\":\"qwen-plus\",\"object\":\"chat.completion.chunk\",\"service_tier\":null,\"system_fingerprint\":null,\"usage\":null}";
     assert!(serde_json::from_str::<QianWenChatRes<QianWenChatChunkData>>(json2).is_ok());

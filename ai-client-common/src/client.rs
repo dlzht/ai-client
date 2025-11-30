@@ -1,8 +1,8 @@
 use std::time::Duration;
 
 use reqwest::{
-  header::{AsHeaderName, HeaderMap, HeaderName, HeaderValue}, Client,
-  Proxy,
+  Client, Method, Proxy,
+  header::{AsHeaderName, HeaderMap, HeaderName, HeaderValue},
 };
 use serde::{Deserialize, Serialize};
 use snafu::ResultExt;
@@ -24,20 +24,24 @@ impl HttpClientOptions {
     }
   }
 
-  pub fn set_headers(&mut self, headers: HeaderMap) {
+  pub fn with_headers(mut self, headers: HeaderMap) -> Self {
     self.headers.extend(headers);
+    self
   }
 
-  pub fn set_header(&mut self, key: HeaderName, value: HeaderValue) {
+  pub fn with_header(mut self, key: HeaderName, value: HeaderValue) -> Self {
     self.headers.insert(key, value);
+    self
   }
 
-  pub fn set_proxy(&mut self, proxy: Proxy) {
+  pub fn with_proxy(mut self, proxy: Proxy) -> Self {
     self.proxy = Some(proxy);
+    self
   }
 
-  pub fn set_timeout(&mut self, timeout: Duration) {
+  pub fn with_timeout(mut self, timeout: Duration) -> Self {
     self.timeout = Some(timeout);
+    self
   }
 
   pub fn contains_header(&self, key: impl AsHeaderName) -> bool {
@@ -59,21 +63,60 @@ impl HttpClientOptions {
   }
 }
 
-pub struct HttpClient;
+pub struct HttpComponent;
 
-impl HttpClient {
-  pub async fn post<T: Serialize + ?Sized, U: for<'de> Deserialize<'de>>(
+impl HttpComponent {
+  pub fn static_header(key: &'static str, value: &'static str) -> HeaderMap {
+    let mut headers = HeaderMap::with_capacity(1);
+    headers.insert(
+      HeaderName::from_static(key),
+      HeaderValue::from_static(value),
+    );
+    headers
+  }
+
+  pub async fn get<Q: Serialize + ?Sized, B: Serialize + ?Sized, R: for<'de> Deserialize<'de>>(
     client: &Client,
     url: &str,
-    json: &T,
-  ) -> Result<U> {
-    let res = client
-      .post(url)
-      .json(json)
+    headers: Option<HeaderMap>,
+    queries: Option<&Q>,
+    json: Option<&B>,
+  ) -> Result<R> {
+    Self::execute(client, Method::GET, url, headers, queries, json).await
+  }
+  pub async fn post<Q: Serialize + ?Sized, B: Serialize + ?Sized, R: for<'de> Deserialize<'de>>(
+    client: &Client,
+    url: &str,
+    headers: Option<HeaderMap>,
+    queries: Option<&Q>,
+    json: Option<&B>,
+  ) -> Result<R> {
+    Self::execute(client, Method::POST, url, headers, queries, json).await
+  }
+
+  async fn execute<Q: Serialize + ?Sized, B: Serialize + ?Sized, R: for<'de> Deserialize<'de>>(
+    client: &Client,
+    method: Method,
+    url: &str,
+    headers: Option<HeaderMap>,
+    queries: Option<&Q>,
+    json: Option<&B>,
+  ) -> Result<R> {
+    let mut req = client.request(method, url);
+    if let Some(headers) = headers {
+      req = req.headers(headers);
+    }
+    if let Some(queries) = queries {
+      req = req.query(queries);
+    }
+    if let Some(json) = json {
+      req = req.json(json);
+    }
+    let res = req
       .send()
       .await
       .context(ReqwestClientSnafu)?
-      .json::<U>()
+      .json::<R>()
       .await
       .context(ReqwestClientSnafu)?;
     Ok(res)

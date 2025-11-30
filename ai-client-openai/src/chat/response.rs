@@ -1,5 +1,5 @@
-use serde::{Deserialize, Serialize};
 use ai_client_common::common::MessageRole;
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct OpenAiChatRes {

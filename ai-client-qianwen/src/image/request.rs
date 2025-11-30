@@ -1,9 +1,9 @@
 use serde::{Deserialize, Serialize};
+
 use crate::image::model::QianWenImageModel;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct QianWenImageReq {
-
   #[serde(rename = "model")]
   model: QianWenImageModel,
 
@@ -12,7 +12,6 @@ pub struct QianWenImageReq {
 
   #[serde(rename = "parameters")]
   parameters: Option<ParameterParam>,
-
 }
 
 impl QianWenImageReq {
@@ -20,15 +19,13 @@ impl QianWenImageReq {
     let input = InputParam {
       messages: vec![InputMessage {
         role: "user".to_string(),
-        content: vec![MessageContent {
-          text: text.into()
-        }]
-      }]
+        content: vec![MessageContent { text: text.into() }],
+      }],
     };
     QianWenImageReq {
       model: model.into(),
       input,
-      parameters: None
+      parameters: None,
     }
   }
 
@@ -41,7 +38,7 @@ impl QianWenImageReq {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub(crate) struct InputParam {
   #[serde(rename = "messages")]
-  messages: Vec<InputMessage>
+  messages: Vec<InputMessage>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -50,13 +47,13 @@ pub(crate) struct InputMessage {
   role: String,
 
   #[serde(rename = "content")]
-  content: Vec<MessageContent>
+  content: Vec<MessageContent>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub(crate) struct MessageContent {
   #[serde(rename = "text")]
-  text: String
+  text: String,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -88,7 +85,7 @@ impl ParameterParam {
       n: None,
       prompt_extend: None,
       watermark: None,
-      seed: None
+      seed: None,
     }
   }
 
@@ -141,7 +138,7 @@ pub enum ImageSize {
   W928H1664,
 
   #[serde(untagged)]
-  Other(String)
+  Other(String),
 }
 
 #[cfg(test)]

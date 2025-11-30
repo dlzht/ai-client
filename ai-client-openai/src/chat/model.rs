@@ -4,85 +4,85 @@ use serde::{Deserialize, Serialize};
 pub enum OpenAiChatModel {
   #[serde(rename = "gpt-5.1")]
   Gpt51,
-  
+
   #[serde(rename = "o4-mini")]
   O4Mini,
-  
+
   #[serde(rename = "o3")]
   O3,
-  
+
   #[serde(rename = "o3-mini")]
   O3Mini,
-  
+
   #[serde(rename = "o1")]
   O1,
-  
+
   #[serde(rename = "o1-mini")]
   O1Mini,
-  
+
   #[serde(rename = "o1-pro")]
   O1Pro,
-  
+
   #[serde(rename = "gpt-4.1")]
   Gpt41,
-  
+
   #[serde(rename = "gpt-5")]
   Gpt5,
-  
+
   #[serde(rename = "gpt-5-mini")]
   Gpt5Mini,
-  
+
   #[serde(rename = "gpt-5-nano")]
   Gpt5Nano,
-  
+
   #[serde(rename = "gpt-5-chat-latest")]
   Gpt5ChatLatest,
-  
+
   #[serde(rename = "gpt-4o")]
   Gpt4O,
-  
+
   #[serde(rename = "chatgpt-4o-latest")]
   Chatgpt4OLatest,
-  
+
   #[serde(rename = "gpt-4o-audio-preview")]
   Gpt4OAudioPreview,
-  
+
   #[serde(rename = "gpt-4.1-mini")]
   Gpt41Mini,
-  
+
   #[serde(rename = "gpt-4.1-nano")]
   Gpt41Nano,
-  
+
   #[serde(rename = "gpt-4o-mini")]
   Gpt4OMini,
-  
+
   #[serde(rename = "gpt-4o-mini-audio-preview")]
   Gpt4OMiniAudioPreview,
-  
+
   #[serde(rename = "gpt-4o-realtime-preview")]
   Gpt4oRealtimePreview,
-  
+
   #[serde(rename = "gpt-4o-mini-realtime-preview")]
   Gpt4oMiniRealtimePreview,
-  
+
   #[serde(rename = "gpt-4-turbo")]
   Gpt4Turbo,
-  
+
   #[serde(rename = "gpt-4")]
   Gpt4,
-  
+
   #[serde(rename = "gpt-3.5-turbo")]
   Gpt35Turbo,
-  
+
   #[serde(rename = "gpt-3.5-turbo-instruct")]
   Gpt35TurboInstruct,
-  
+
   #[serde(rename = "gpt-4o-search-preview")]
   Gpt4OSearchPreview,
-  
+
   #[serde(rename = "gpt-4o-mini-search-preview")]
   Gpt4OMiniSearchPreview,
-  
+
   #[serde(untagged)]
   Other(String),
 }

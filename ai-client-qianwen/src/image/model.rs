@@ -4,12 +4,12 @@ use serde::{Deserialize, Serialize};
 pub enum QianWenImageModel {
   #[serde(rename = "qwen-image-plus")]
   QwenImagePlus,
-  
+
   #[serde(rename = "qwen-image")]
   QwenImage,
-  
+
   #[serde(untagged)]
-  Other(String)
+  Other(String),
 }
 
 impl QianWenImageModel {
@@ -20,7 +20,7 @@ impl QianWenImageModel {
       QianWenImageModel::Other(s) => s.as_str(),
     }
   }
-  
+
   pub fn from_str(s: &str) -> QianWenImageModel {
     match s {
       "qwen-image-plus" => QianWenImageModel::QwenImagePlus,

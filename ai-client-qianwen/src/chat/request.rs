@@ -1,6 +1,7 @@
+use ai_client_common::common::MessageRole;
 use schemars::Schema;
 use serde::{Deserialize, Serialize};
-use ai_client_common::common::MessageRole;
+
 use crate::chat::model::QianWenChatModel;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -8,31 +9,22 @@ pub struct QianWenChatReq {
   #[serde(rename = "model")]
   model: QianWenChatModel,
 
-  #[serde(rename = "message")]
+  #[serde(rename = "messages")]
   messages: Vec<MessageParam>,
 
   #[serde(rename = "stream", skip_serializing_if = "Option::is_none")]
   stream: Option<bool>,
 
-  #[serde(
-    rename = "stream_options",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "stream_options", skip_serializing_if = "Option::is_none")]
   stream_options: Option<StreamOptionsParam>,
 
-  #[serde(
-    rename = "modalities",
-    skip_serializing_if = "Vec::is_empty"
-  )]
+  #[serde(rename = "modalities", skip_serializing_if = "Vec::is_empty")]
   modalities: Vec<OutputModalityParam>,
 
   #[serde(rename = "audio", skip_serializing_if = "Option::is_none")]
   audio: Option<OutputAudioParam>,
 
-  #[serde(
-    rename = "temperature",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "temperature", skip_serializing_if = "Option::is_none")]
   temperature: Option<f32>,
 
   #[serde(rename = "top_p", skip_serializing_if = "Option::is_none")]
@@ -41,28 +33,16 @@ pub struct QianWenChatReq {
   #[serde(rename = "top_k", skip_serializing_if = "Option::is_none")]
   top_k: Option<i32>,
 
-  #[serde(
-    rename = "presence_penalty",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "presence_penalty", skip_serializing_if = "Option::is_none")]
   presence_penalty: Option<f32>,
 
-  #[serde(
-    rename = "response_format",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "response_format", skip_serializing_if = "Option::is_none")]
   response_format: Option<OutputFormatParam>,
 
-  #[serde(
-    rename = "max_input_tokens",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "max_input_tokens", skip_serializing_if = "Option::is_none")]
   max_input_tokens: Option<i32>,
 
-  #[serde(
-    rename = "max_tokens",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "max_tokens", skip_serializing_if = "Option::is_none")]
   max_tokens: Option<i32>,
 
   #[serde(
@@ -74,16 +54,10 @@ pub struct QianWenChatReq {
   #[serde(rename = "n", skip_serializing_if = "Option::is_none")]
   n: Option<i32>,
 
-  #[serde(
-    rename = "enable_thinking",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "enable_thinking", skip_serializing_if = "Option::is_none")]
   enable_thinking: Option<bool>,
 
-  #[serde(
-    rename = "thinking_budget",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "thinking_budget", skip_serializing_if = "Option::is_none")]
   thinking_budget: Option<i32>,
 
   #[serde(
@@ -95,16 +69,10 @@ pub struct QianWenChatReq {
   #[serde(rename = "seed", skip_serializing_if = "Option::is_none")]
   seed: Option<i32>,
 
-  #[serde(
-    rename = "logprobs",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "logprobs", skip_serializing_if = "Option::is_none")]
   log_prob: Option<bool>,
 
-  #[serde(
-    rename = "top_logprobs",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "top_logprobs", skip_serializing_if = "Option::is_none")]
   top_log_prob: Option<i32>,
 
   #[serde(rename = "stop", skip_serializing_if = "Option::is_none")]
@@ -113,10 +81,7 @@ pub struct QianWenChatReq {
   #[serde(rename = "tools", skip_serializing_if = "Vec::is_empty")]
   tools: Vec<ToolParam>,
 
-  #[serde(
-    rename = "tool_choice",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "tool_choice", skip_serializing_if = "Option::is_none")]
   tool_choice: Option<ToolChoicesParam>,
 
   #[serde(
@@ -125,16 +90,10 @@ pub struct QianWenChatReq {
   )]
   parallel_tool_calls: Option<bool>,
 
-  #[serde(
-    rename = "enable_search",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "enable_search", skip_serializing_if = "Option::is_none")]
   enable_search: Option<bool>,
 
-  #[serde(
-    rename = "search_options",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "search_options", skip_serializing_if = "Option::is_none")]
   search_options: Option<SearchOptionsParam>,
 
   #[serde(
@@ -176,6 +135,146 @@ impl QianWenChatReq {
       search_options: None,
       data_inspection: None,
     }
+  }
+
+  pub fn with_model(mut self, model: impl Into<QianWenChatModel>) -> Self {
+    self.model = model.into();
+    self
+  }
+
+  pub fn with_messages(mut self, messages: Vec<MessageParam>) -> Self {
+    self.messages = messages;
+    self
+  }
+
+  pub fn with_stream(mut self, stream: bool) -> Self {
+    self.stream = Some(stream);
+    self
+  }
+
+  pub fn with_stream_options(mut self, stream_options: StreamOptionsParam) -> Self {
+    self.stream_options = Some(stream_options);
+    self
+  }
+
+  pub fn with_modalities(mut self, modalities: Vec<OutputModalityParam>) -> Self {
+    self.modalities = modalities;
+    self
+  }
+
+  pub fn with_audio(mut self, audio: OutputAudioParam) -> Self {
+    self.audio = Some(audio);
+    self
+  }
+
+  pub fn with_temperature(mut self, temperature: f32) -> Self {
+    self.temperature = Some(temperature);
+    self
+  }
+
+  pub fn with_top_p(mut self, top_p: f32) -> Self {
+    self.top_p = Some(top_p);
+    self
+  }
+
+  pub fn with_top_k(mut self, top_k: i32) -> Self {
+    self.top_k = Some(top_k);
+    self
+  }
+
+  pub fn with_presence_penalty(mut self, presence_penalty: f32) -> Self {
+    self.presence_penalty = Some(presence_penalty);
+    self
+  }
+
+  pub fn with_response_format(mut self, response_format: OutputFormatParam) -> Self {
+    self.response_format = Some(response_format);
+    self
+  }
+
+  pub fn with_max_input_tokens(mut self, max_input_tokens: i32) -> Self {
+    self.max_input_tokens = Some(max_input_tokens);
+    self
+  }
+
+  pub fn with_max_tokens(mut self, max_tokens: i32) -> Self {
+    self.max_tokens = Some(max_tokens);
+    self
+  }
+
+  pub fn with_vl_high_resolution_images(mut self, vl_high_resolution_images: bool) -> Self {
+    self.vl_high_resolution_images = Some(vl_high_resolution_images);
+    self
+  }
+
+  pub fn with_n(mut self, n: i32) -> Self {
+    self.n = Some(n);
+    self
+  }
+
+  pub fn with_enable_thinking(mut self, enable_thinking: bool) -> Self {
+    self.enable_thinking = Some(enable_thinking);
+    self
+  }
+
+  pub fn with_thinking_budget(mut self, thinking_budget: i32) -> Self {
+    self.thinking_budget = Some(thinking_budget);
+    self
+  }
+
+  pub fn with_enable_code_interpreter(mut self, enable_code_interpreter: bool) -> Self {
+    self.enable_code_interpreter = Some(enable_code_interpreter);
+    self
+  }
+
+  pub fn with_seed(mut self, seed: i32) -> Self {
+    self.seed = Some(seed);
+    self
+  }
+
+  pub fn with_log_prob(mut self, log_prob: bool) -> Self {
+    self.log_prob = Some(log_prob);
+    self
+  }
+
+  pub fn with_top_log_prob(mut self, top_log_prob: i32) -> Self {
+    self.top_log_prob = Some(top_log_prob);
+    self
+  }
+
+  pub fn with_stop(mut self, stop: StopParam) -> Self {
+    self.stop = Some(stop);
+    self
+  }
+
+  pub fn with_tools(mut self, tools: Vec<ToolParam>) -> Self {
+    self.tools = tools;
+    self
+  }
+
+  pub fn with_tool_choice(mut self, tool_choice: ToolChoicesParam) -> Self {
+    self.tool_choice = Some(tool_choice);
+    self
+  }
+
+  pub fn with_parallel_tool_calls(mut self, parallel_tool_calls: bool) -> Self {
+    self.parallel_tool_calls = Some(parallel_tool_calls);
+    self
+  }
+
+  pub fn with_enable_search(mut self, enable_search: bool) -> Self {
+    self.enable_search = Some(enable_search);
+    self
+  }
+
+  pub fn with_search_options(mut self, search_options: SearchOptionsParam) -> Self {
+    self.search_options = Some(search_options);
+    self
+  }
+
+  pub fn with_data_inspection(mut self, data_inspection: String) -> Self {
+    self.data_inspection = Some(data_inspection);
+    self
   }
 }
 
@@ -484,22 +583,13 @@ pub(crate) struct UserMessageContentImage {
   #[serde(rename = "image_url")]
   image_url: UserMessageContentImageInner,
 
-  #[serde(
-    rename = "cache_control",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "cache_control", skip_serializing_if = "Option::is_none")]
   cache_control: Option<UserMessageContentCache>,
 
-  #[serde(
-    rename = "min_pixels",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "min_pixels", skip_serializing_if = "Option::is_none")]
   min_pixels: Option<i32>,
 
-  #[serde(
-    rename = "max_pixels",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "max_pixels", skip_serializing_if = "Option::is_none")]
   max_pixels: Option<i32>,
 }
 
@@ -538,10 +628,7 @@ pub(crate) struct UserMessageContentVideoArray {
   #[serde(rename = "video")]
   video: Vec<String>,
 
-  #[serde(
-    rename = "cache_control",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "cache_control", skip_serializing_if = "Option::is_none")]
   cache_control: Option<UserMessageContentCache>,
 }
 
@@ -553,10 +640,7 @@ pub(crate) struct UserMessageContentVideo {
   #[serde(rename = "input_audio")]
   video_url: UserMessageContentVideoInner,
 
-  #[serde(
-    rename = "cache_control",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "cache_control", skip_serializing_if = "Option::is_none")]
   cache_control: Option<UserMessageContentCache>,
 }
 
@@ -583,10 +667,7 @@ pub(crate) struct AssistantMessage {
   #[serde(rename = "partial", skip_serializing_if = "Option::is_none")]
   partial: Option<bool>,
 
-  #[serde(
-    rename = "tool_calls",
-    skip_serializing_if = "Vec::is_empty"
-  )]
+  #[serde(rename = "tool_calls", skip_serializing_if = "Vec::is_empty")]
   tool_calls: Vec<AssistantMessageToolCall>,
 }
 
@@ -628,10 +709,7 @@ pub(crate) struct ToolMessage {
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct StreamOptionsParam {
-  #[serde(
-    rename = "include_usage",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "include_usage", skip_serializing_if = "Option::is_none")]
   include_usage: Option<bool>,
 }
 
@@ -831,16 +909,10 @@ pub(crate) struct ToolChoicesForceInner {
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct SearchOptionsParam {
-  #[serde(
-    rename = "forced_search",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "forced_search", skip_serializing_if = "Option::is_none")]
   forced_search: Option<bool>,
 
-  #[serde(
-    rename = "search_strategy",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "search_strategy", skip_serializing_if = "Option::is_none")]
   search_strategy: Option<SearchOptionStrategy>,
 
   #[serde(

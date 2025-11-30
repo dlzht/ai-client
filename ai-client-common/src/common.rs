@@ -17,3 +17,6 @@ pub enum MessageRole {
   #[serde(rename = "tool")]
   Tool,
 }
+
+#[derive(Serialize, Deserialize, PartialEq, Eq, Debug, Copy, Clone)]
+pub struct DummyType;

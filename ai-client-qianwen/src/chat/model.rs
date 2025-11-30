@@ -4,84 +4,84 @@ use serde::{Deserialize, Serialize};
 pub enum QianWenChatModel {
   #[serde(rename = "qwen3-max")]
   Qwen3Max,
-  
+
   #[serde(rename = "qwen3-max-2025-09-23")]
   Qwen3Max20250923,
-  
+
   #[serde(rename = "qwen3-max-preview")]
   Qwen3MaxPreview,
-  
+
   #[serde(rename = "qwen-plus")]
   QwenPlus,
-  
+
   #[serde(rename = "qwen-plus-latest")]
   QwenPlusLatest,
-  
+
   #[serde(rename = "qwen-plus-2025-09-11")]
   QwenPlus20250911,
-  
+
   #[serde(rename = "qwen-plus-2025-07-28")]
   QwenPlus20250728,
-  
+
   #[serde(rename = "qwen-plus-2025-07-14")]
   QwenPlus20250714,
-  
+
   #[serde(rename = "qwen-plus-2025-04-28")]
   QwenPlus20250428,
-  
+
   #[serde(rename = "qwen-flash")]
   QwenFlash,
-  
+
   #[serde(rename = "qwen-flash-2025-07-28")]
   QwenFlash20250728,
-  
+
   #[serde(rename = "qwen-turbo")]
   QwenTurbo,
-  
+
   #[serde(rename = "qwen-turbo-latest")]
   QwenTurboLatest,
-  
+
   #[serde(rename = "qwen-turbo-2025-07-15")]
   QwenTurbo20250715,
-  
+
   #[serde(rename = "qwen-turbo-2025-04-28")]
   QwenTurbo20250428,
-  
+
   #[serde(rename = "qwq-plus")]
   QwqPlus,
-  
+
   #[serde(rename = "qwq-plus-latest")]
   QwqPlusLatest,
-  
+
   #[serde(rename = "qwq-plus-2025-03-05")]
   QwqPlus20250305,
-  
+
   #[serde(rename = "qwen-long")]
   QwenLong,
-  
+
   #[serde(rename = "qwen-long-latest")]
   QwenLongLatest,
-  
+
   #[serde(rename = "qwen-long-2025-01-25")]
   QwenLong20250125,
-  
+
   #[serde(rename = "qwen3-omni-flash")]
   Qwen3OmniFlash,
-  
+
   #[serde(rename = "qwen3-omni-flash-2025-09-15")]
   Qwen3OmniFlash20250915,
-  
+
   #[serde(rename = "qwen-omni-turbo")]
   QwenOmniTurbo,
-  
+
   #[serde(rename = "qwen-omni-turbo-latest")]
   QwenOmniTurboLatest,
-  
+
   #[serde(rename = "qwen-omni-turbo-2025-01-19")]
   QwenOmniTurbo20250119,
-  
+
   #[serde(untagged)]
-  Other(String)
+  Other(String),
 }
 
 impl QianWenChatModel {

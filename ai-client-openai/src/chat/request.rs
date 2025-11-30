@@ -1,8 +1,9 @@
 use std::collections::HashMap;
 
+use ai_client_common::common::MessageRole;
 use schemars::Schema;
 use serde::{Deserialize, Serialize};
-use ai_client_common::common::MessageRole;
+
 use crate::chat::model::OpenAiChatModel;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -16,10 +17,7 @@ pub struct OpenAiChatReq {
   #[serde(rename = "audio", skip_serializing_if = "Option::is_none")]
   audio: Option<AudioParam>,
 
-  #[serde(
-    rename = "frequency_penalty",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "frequency_penalty", skip_serializing_if = "Option::is_none")]
   frequency_penalty: Option<f32>,
 
   // #[serde(rename = "function_call")]
@@ -27,16 +25,10 @@ pub struct OpenAiChatReq {
   //
   // #[serde(rename = "functions")]
   // functions: Option<u32>,
-  #[serde(
-    rename = "logit_bias",
-    skip_serializing_if = "HashMap::is_empty"
-  )]
+  #[serde(rename = "logit_bias", skip_serializing_if = "HashMap::is_empty")]
   logit_bias: LogitBiasParam,
 
-  #[serde(
-    rename = "logprobs",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "logprobs", skip_serializing_if = "Option::is_none")]
   log_prob: Option<bool>,
 
   #[serde(
@@ -47,16 +39,10 @@ pub struct OpenAiChatReq {
 
   // #[serde(rename = "max_tokens")]
   // max_tokens: Option<i32>,
-  #[serde(
-    rename = "metadata",
-    skip_serializing_if = "HashMap::is_empty"
-  )]
+  #[serde(rename = "metadata", skip_serializing_if = "HashMap::is_empty")]
   metadata: MetadataParam,
 
-  #[serde(
-    rename = "modalities",
-    skip_serializing_if = "Vec::is_empty"
-  )]
+  #[serde(rename = "modalities", skip_serializing_if = "Vec::is_empty")]
   modalities: Vec<OutputModalityParam>,
 
   #[serde(rename = "n", skip_serializing_if = "Option::is_none")]
@@ -68,22 +54,13 @@ pub struct OpenAiChatReq {
   )]
   parallel_tool_calls: Option<bool>,
 
-  #[serde(
-    rename = "prediction",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "prediction", skip_serializing_if = "Option::is_none")]
   prediction: Option<PredictionParam>,
 
-  #[serde(
-    rename = "presence_penalty",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "presence_penalty", skip_serializing_if = "Option::is_none")]
   presence_penalty: Option<f32>,
 
-  #[serde(
-    rename = "prompt_cache_key",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "prompt_cache_key", skip_serializing_if = "Option::is_none")]
   prompt_cache_key: Option<String>,
 
   #[serde(
@@ -92,30 +69,18 @@ pub struct OpenAiChatReq {
   )]
   prompt_cache_retention: Option<String>,
 
-  #[serde(
-    rename = "reasoning_effort",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "reasoning_effort", skip_serializing_if = "Option::is_none")]
   reasoning_effort: Option<String>,
 
-  #[serde(
-    rename = "response_format",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "response_format", skip_serializing_if = "Option::is_none")]
   response_format: Option<OutputFormatParam>,
 
-  #[serde(
-    rename = "safety_identifier",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "safety_identifier", skip_serializing_if = "Option::is_none")]
   safety_identifier: Option<String>,
 
   // #[serde(rename = "seed")]
   // seed: Option<i32>,
-  #[serde(
-    rename = "service_tier",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "service_tier", skip_serializing_if = "Option::is_none")]
   service_tier: Option<String>,
 
   #[serde(rename = "stop", skip_serializing_if = "Option::is_none")]
@@ -127,31 +92,19 @@ pub struct OpenAiChatReq {
   #[serde(rename = "stream", skip_serializing_if = "Option::is_none")]
   stream: Option<bool>,
 
-  #[serde(
-    rename = "stream_options",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "stream_options", skip_serializing_if = "Option::is_none")]
   stream_options: Option<StreamOptionsParam>,
 
-  #[serde(
-    rename = "temperature",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "temperature", skip_serializing_if = "Option::is_none")]
   temperature: Option<f32>,
 
-  #[serde(
-    rename = "tool_choice",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "tool_choice", skip_serializing_if = "Option::is_none")]
   tool_choice: Option<ToolChoiceParam>,
 
   #[serde(rename = "tools", skip_serializing_if = "Vec::is_empty")]
   tools: Vec<ToolsParam>,
 
-  #[serde(
-    rename = "top_logprobs",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "top_logprobs", skip_serializing_if = "Option::is_none")]
   top_log_prob: Option<i32>,
 
   #[serde(rename = "top_p", skip_serializing_if = "Option::is_none")]
@@ -159,16 +112,10 @@ pub struct OpenAiChatReq {
 
   // #[serde(rename = "user")]
   // user: Option<String>,
-  #[serde(
-    rename = "verbosity",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "verbosity", skip_serializing_if = "Option::is_none")]
   verbosity: Option<VerbosityParam>,
 
-  #[serde(
-    rename = "web_search_options",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "web_search_options", skip_serializing_if = "Option::is_none")]
   web_search_options: Option<WebSearchOptionsParam>,
 }
 
@@ -1433,10 +1380,7 @@ pub struct StreamOptionsParam {
   )]
   include_obfuscation: Option<bool>,
 
-  #[serde(
-    rename = "include_usage",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "include_usage", skip_serializing_if = "Option::is_none")]
   include_usage: Option<bool>,
 }
 
@@ -1768,10 +1712,7 @@ pub struct WebSearchOptionsParam {
   )]
   search_context_size: Option<String>,
 
-  #[serde(
-    rename = "user_location",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "user_location", skip_serializing_if = "Option::is_none")]
   user_location: Option<UserLocation>,
 }
 
@@ -1850,10 +1791,7 @@ struct Approximate {
   #[serde(rename = "region", skip_serializing_if = "Option::is_none")]
   region: Option<String>,
 
-  #[serde(
-    rename = "timezone",
-    skip_serializing_if = "Option::is_none"
-  )]
+  #[serde(rename = "timezone", skip_serializing_if = "Option::is_none")]
   timezone: Option<String>,
 }
 

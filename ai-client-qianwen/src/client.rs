@@ -1,11 +1,8 @@
 use ai_client_common::{
-  client::HttpClientOptions,
-  errors::{ReqwestHeaderSnafu, Result},
+  client::{HttpClientOptions, HttpComponent},
+  errors::Result,
 };
-use reqwest::{
-  Client,
-  header::{AUTHORIZATION, CONTENT_TYPE, HeaderValue},
-};
+use reqwest::Client;
 
 use crate::{
   chat::{
@@ -29,40 +26,16 @@ pub struct QianWenClient {
 
 impl QianWenClient {
   pub fn new(api_key: impl AsRef<str>) -> Result<Self> {
-    let authorization = HeaderValue::from_str(api_key.as_ref()).map_err(|_| {
-      ReqwestHeaderSnafu {
-        header: api_key.as_ref().to_string(),
-      }
-      .build()
-    })?;
-    let options = HttpClientOptions::new()
-      .with_header(CONTENT_TYPE, HeaderValue::from_static("application/json"))
-      .with_header(AUTHORIZATION, authorization);
     let client = QianWenClient {
-      http_client: options.build_client()?,
+      http_client: HttpComponent::new_client_with_api_key(api_key)?,
       api_endpoints: QianWenEndpoints::new(),
     };
     Ok(client)
   }
 
-  pub fn new_with_options(
-    api_key: impl AsRef<str>,
-    mut options: HttpClientOptions,
-  ) -> Result<Self> {
-    if !options.contains_header(CONTENT_TYPE) {
-      options = options.with_header(CONTENT_TYPE, HeaderValue::from_static("application/json"));
-    }
-    if !options.contains_header(AUTHORIZATION) {
-      let authorization = HeaderValue::from_str(api_key.as_ref()).map_err(|_| {
-        ReqwestHeaderSnafu {
-          header: api_key.as_ref().to_string(),
-        }
-        .build()
-      })?;
-      options = options.with_header(AUTHORIZATION, authorization);
-    }
+  pub fn new_with_options(api_key: impl AsRef<str>, options: HttpClientOptions) -> Result<Self> {
     let client = QianWenClient {
-      http_client: options.build_client()?,
+      http_client: HttpComponent::new_client_with_options(api_key, options)?,
       api_endpoints: QianWenEndpoints::new(),
     };
     Ok(client)

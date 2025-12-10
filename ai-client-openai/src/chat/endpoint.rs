@@ -1,8 +1,4 @@
-use ai_client_common::{
-  client::HttpComponent,
-  common::DummyType,
-  errors::Result,
-};
+use ai_client_common::{client::HttpComponent, common::NoneType, errors::Result};
 use reqwest::Client;
 
 use crate::chat::{model::OpenAiChatModel, request::OpenAiChatReq, response::OpenAiChatRes};
@@ -42,7 +38,7 @@ impl OpenAiChatEndpoint {
     client: &Client,
     request: &OpenAiChatReq,
   ) -> Result<OpenAiChatRes> {
-    HttpComponent::post::<DummyType, OpenAiChatReq, OpenAiChatRes>(
+    HttpComponent::post::<NoneType, OpenAiChatReq, OpenAiChatRes>(
       client,
       &self.urls.chat_completion,
       None,

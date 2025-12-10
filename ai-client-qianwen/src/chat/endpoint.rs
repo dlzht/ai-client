@@ -1,4 +1,4 @@
-use ai_client_common::{client::HttpComponent, common::DummyType, errors::Result};
+use ai_client_common::{client::HttpComponent, common::NoneType, errors::Result};
 use reqwest::Client;
 
 use crate::chat::{
@@ -40,7 +40,7 @@ impl QianWenChatEndpoint {
     client: &Client,
     request: &QianWenChatReq,
   ) -> Result<QianWenChatRes<ChatCompletionRes>> {
-    HttpComponent::post::<DummyType, QianWenChatReq, QianWenChatRes<ChatCompletionRes>>(
+    HttpComponent::post::<NoneType, QianWenChatReq, QianWenChatRes<ChatCompletionRes>>(
       client,
       &self.urls.chat_completion,
       None,

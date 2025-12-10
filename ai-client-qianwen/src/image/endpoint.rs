@@ -1,4 +1,4 @@
-use ai_client_common::{client::HttpComponent, common::DummyType, errors::Result};
+use ai_client_common::{client::HttpComponent, common::NoneType, errors::Result};
 use reqwest::Client;
 
 use crate::image::{
@@ -56,7 +56,7 @@ impl QianWenImageEndpoint {
     client: &Client,
     request: &QianWenImageReq,
   ) -> Result<QianWenImageRes<SyncTaskRes>> {
-    HttpComponent::post::<DummyType, QianWenImageReq, QianWenImageRes<SyncTaskRes>>(
+    HttpComponent::post::<NoneType, QianWenImageReq, QianWenImageRes<SyncTaskRes>>(
       client,
       &self.urls.text_to_image_sync_task,
       None,
@@ -72,7 +72,7 @@ impl QianWenImageEndpoint {
     request: &QianWenImageReq,
   ) -> Result<QianWenImageRes<AsyncTaskRes>> {
     let header = HttpComponent::static_header("X-DashScope-Async", "enable");
-    HttpComponent::post::<DummyType, QianWenImageReq, QianWenImageRes<AsyncTaskRes>>(
+    HttpComponent::post::<NoneType, QianWenImageReq, QianWenImageRes<AsyncTaskRes>>(
       client,
       &self.urls.text_to_image_async_task,
       Some(header),
@@ -91,7 +91,7 @@ impl QianWenImageEndpoint {
       .urls
       .text_to_image_async_result
       .replace("{task_id}", task_id);
-    HttpComponent::get::<DummyType, DummyType, QianWenImageRes<AsyncResultRes>>(
+    HttpComponent::get::<NoneType, NoneType, QianWenImageRes<AsyncResultRes>>(
       client, &url, None, None, None,
     )
     .await

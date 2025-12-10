@@ -2,12 +2,12 @@ use std::time::Duration;
 
 use reqwest::{
   Client, Method, Proxy,
-  header::{AsHeaderName, HeaderMap, HeaderName, HeaderValue},
+  header::{AUTHORIZATION, AsHeaderName, CONTENT_TYPE, HeaderMap, HeaderName, HeaderValue},
 };
 use serde::{Deserialize, Serialize};
 use snafu::ResultExt;
 
-use crate::errors::{ReqwestClientSnafu, Result};
+use crate::errors::{ReqwestClientSnafu, ReqwestHeaderSnafu, Result};
 
 pub struct HttpClientOptions {
   headers: HeaderMap,
@@ -66,6 +66,37 @@ impl HttpClientOptions {
 pub struct HttpComponent;
 
 impl HttpComponent {
+  pub fn new_client_with_api_key(api_key: impl AsRef<str>) -> Result<Client> {
+    let authorization = HeaderValue::from_str(api_key.as_ref()).map_err(|_| {
+      ReqwestHeaderSnafu {
+        header: api_key.as_ref().to_string(),
+      }
+      .build()
+    })?;
+    let options = HttpClientOptions::new()
+      .with_header(CONTENT_TYPE, HeaderValue::from_static("application/json"))
+      .with_header(AUTHORIZATION, authorization);
+    options.build_client()
+  }
+
+  pub fn new_client_with_options(
+    api_key: impl AsRef<str>,
+    mut options: HttpClientOptions,
+  ) -> Result<Client> {
+    if !options.contains_header(CONTENT_TYPE) {
+      options = options.with_header(CONTENT_TYPE, HeaderValue::from_static("application/json"));
+    }
+    if !options.contains_header(AUTHORIZATION) {
+      let authorization = HeaderValue::from_str(api_key.as_ref()).map_err(|_| {
+        ReqwestHeaderSnafu {
+          header: api_key.as_ref().to_string(),
+        }
+        .build()
+      })?;
+      options = options.with_header(AUTHORIZATION, authorization);
+    }
+    options.build_client()
+  }
   pub fn static_header(key: &'static str, value: &'static str) -> HeaderMap {
     let mut headers = HeaderMap::with_capacity(1);
     headers.insert(

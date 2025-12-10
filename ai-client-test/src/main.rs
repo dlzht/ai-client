@@ -14,8 +14,7 @@ async fn run_main() -> Result<()> {
   println!("api_key: {}", api_key);
   let client = QianWenClient::new(api_key)?;
   let req = client.req_chat_completion_with_user_text("荒野大镖客的英文名称是什么");
-  let res = client.chat_completion(&req)
-      .await?;
+  let res = client.chat_completion(&req).await?;
   println!("{:?}", res);
   Ok(())
 }

@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use ai_client_common::common::MessageRole;
+use ai_client_common::{common::MessageRole, request::StopParam};
 use schemars::Schema;
 use serde::{Deserialize, Serialize};
 
@@ -73,7 +73,7 @@ pub struct OpenAiChatReq {
   reasoning_effort: Option<String>,
 
   #[serde(rename = "response_format", skip_serializing_if = "Option::is_none")]
-  response_format: Option<OutputFormatParam>,
+  response_format: Option<ResponseFormatParam>,
 
   #[serde(rename = "safety_identifier", skip_serializing_if = "Option::is_none")]
   safety_identifier: Option<String>,
@@ -225,7 +225,7 @@ impl OpenAiChatReq {
     self
   }
 
-  pub fn with_response_format(mut self, response_format: OutputFormatParam) -> Self {
+  pub fn with_response_format(mut self, response_format: ResponseFormatParam) -> Self {
     self.response_format = Some(response_format);
     self
   }
@@ -1281,32 +1281,32 @@ pub(crate) struct PredictionContentPart {
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(untagged)]
-pub enum OutputFormatParam {
-  Text(OutputFormatText),
-  JsonObject(OutputFormatJsonObject),
-  JsonSchema(OutputFormatJsonSchema),
+pub enum ResponseFormatParam {
+  Text(ResponseFormatText),
+  JsonObject(ResponseFormatJsonObject),
+  JsonSchema(ResponseFormatJsonSchema),
 }
 
-impl OutputFormatParam {
-  pub fn new_text() -> Self {
-    OutputFormatParam::Text(OutputFormatText {
+impl ResponseFormatParam {
+  pub fn new_with_text_format() -> Self {
+    ResponseFormatParam::Text(ResponseFormatText {
       kind: "text".to_string(),
     })
   }
 
-  pub fn new_json_object() -> Self {
-    OutputFormatParam::JsonObject(OutputFormatJsonObject {
+  pub fn new_with_json_object_format() -> Self {
+    ResponseFormatParam::JsonObject(ResponseFormatJsonObject {
       kind: "json_object".to_string(),
     })
   }
 
-  pub fn new_json_schema(
+  pub fn new_with_json_schema_format(
     name: impl Into<String>,
     description: Option<impl Into<String>>,
     strict: Option<bool>,
     schema: Schema,
   ) -> Self {
-    OutputFormatParam::JsonSchema(OutputFormatJsonSchema {
+    ResponseFormatParam::JsonSchema(ResponseFormatJsonSchema {
       kind: "json_schema".to_string(),
       schema: OutputFormatJsonSchemaInner {
         name: name.into(),
@@ -1319,19 +1319,19 @@ impl OutputFormatParam {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub(crate) struct OutputFormatText {
+pub(crate) struct ResponseFormatText {
   #[serde(rename = "type")]
   kind: String,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub(crate) struct OutputFormatJsonObject {
+pub(crate) struct ResponseFormatJsonObject {
   #[serde(rename = "type")]
   kind: String,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub(crate) struct OutputFormatJsonSchema {
+pub(crate) struct ResponseFormatJsonSchema {
   #[serde(rename = "json_schema")]
   schema: OutputFormatJsonSchemaInner,
 
@@ -1352,24 +1352,6 @@ pub(crate) struct OutputFormatJsonSchemaInner {
 
   #[serde(rename = "schema")]
   schema: Schema,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-#[serde(untagged)]
-pub enum StopParam {
-  Text(String),
-  Array(Vec<String>),
-}
-
-impl StopParam {
-  pub fn new_text(text: impl Into<String>) -> Self {
-    StopParam::Text(text.into())
-  }
-
-  pub fn new_array(texts: impl IntoIterator<Item = impl Into<String>>) -> Self {
-    let texts = texts.into_iter().map(|s| s.into()).collect();
-    StopParam::Array(texts)
-  }
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]

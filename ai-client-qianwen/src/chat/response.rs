@@ -29,44 +29,6 @@ pub struct ChatCompletionRes {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct ChoiceData {
-  #[serde(rename = "finish_reason")]
-  pub finish_reason: Option<String>,
-
-  #[serde(rename = "index")]
-  pub index: i32,
-
-  #[serde(rename = "logprobs")]
-  pub log_prob: Option<ChoiceLogProb>,
-
-  #[serde(rename = "message")]
-  pub message: ChoiceMessage,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct ChoiceMessage {
-  #[serde(rename = "content")]
-  pub content: String,
-
-  #[serde(rename = "reasoning_content")]
-  pub reasoning_content: Option<String>,
-
-  #[serde(rename = "refusal")]
-  pub refusal: Option<String>,
-
-  #[serde(rename = "role")]
-  pub role: Option<MessageRole>,
-
-  // #[serde(rename = "audio")]
-  // audio: Option<i32>,
-
-  // #[serde(rename = "function_call")]
-  // function_call: Option<i32>,
-  #[serde(rename = "tool_calls")]
-  pub tool_calls: Option<Vec<ChoiceToolCall>>,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct UsageData {
   #[serde(rename = "prompt_tokens")]
   pub prompt_tokens: i32,
@@ -134,6 +96,103 @@ pub struct CacheCreationTokenDetail {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct ChoiceData {
+  #[serde(rename = "finish_reason", skip_serializing_if = "Option::is_none")]
+  pub finish_reason: Option<String>,
+
+  #[serde(rename = "index")]
+  pub index: i32,
+
+  #[serde(rename = "logprobs", skip_serializing_if = "Option::is_none")]
+  pub log_prob: Option<ChoiceLogProb>,
+
+  #[serde(rename = "message")]
+  pub message: ChoiceMessage,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct ChoiceMessage {
+  #[serde(rename = "content", skip_serializing_if = "Option::is_none")]
+  pub content: Option<String>,
+
+  #[serde(rename = "reasoning_content", skip_serializing_if = "Option::is_none")]
+  pub reasoning_content: Option<String>,
+
+  #[serde(rename = "refusal", skip_serializing_if = "Option::is_none")]
+  pub refusal: Option<String>,
+
+  #[serde(rename = "role", skip_serializing_if = "Option::is_none")]
+  pub role: Option<MessageRole>,
+
+  // #[serde(rename = "audio")]
+  // audio: Option<i32>,
+
+  // #[serde(rename = "function_call")]
+  // function_call: Option<i32>,
+  #[serde(rename = "tool_calls", skip_serializing_if = "Option::is_none")]
+  pub tool_calls: Option<Vec<ChoiceToolCall>>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct ChoiceToolCall {
+  #[serde(rename = "index", skip_serializing_if = "Option::is_none")]
+  pub index: Option<i32>,
+
+  #[serde(rename = "id")]
+  pub id: String,
+
+  #[serde(rename = "type")]
+  pub kind: String,
+
+  #[serde(rename = "function")]
+  pub function: ChoiceFunction,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct ChoiceFunction {
+  #[serde(rename = "arguments")]
+  pub arguments: String,
+
+  #[serde(rename = "name")]
+  pub name: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct ChoiceLogProb {
+  #[serde(rename = "content", skip_serializing_if = "Option::is_none")]
+  content: Option<Vec<LogProbContent>>,
+  // #[serde(rename = "refusal")]
+  // refusal: Option<Vec<ChunkChoiceLogProbData>>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct LogProbContent {
+  #[serde(rename = "bytes", skip_serializing_if = "Option::is_none")]
+  pub bytes: Option<Vec<u8>>,
+
+  #[serde(rename = "logprob", skip_serializing_if = "Option::is_none")]
+  pub log_prob: Option<f32>,
+
+  #[serde(rename = "token")]
+  pub token: String,
+
+  #[serde(rename = "top_logprobs")]
+  pub top_log_prob: Vec<TopLogProb>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct TopLogProb {
+  #[serde(rename = "bytes", skip_serializing_if = "Option::is_none")]
+  pub bytes: Option<Vec<u8>>,
+
+  #[serde(rename = "logprob", skip_serializing_if = "Option::is_none")]
+  pub log_prob: Option<f32>,
+
+  #[serde(rename = "token")]
+  pub token: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct QianWenChatChunkData {
   #[serde(rename = "id")]
   pub id: String,
@@ -193,92 +252,33 @@ pub struct ChunkChoiceDelta {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct ChoiceToolCall {
-  #[serde(rename = "index")]
-  pub index: i32,
-
-  #[serde(rename = "id")]
-  pub id: String,
-
-  #[serde(rename = "type")]
-  pub kind: String,
-
-  #[serde(rename = "function")]
-  pub function: ChoiceFunction,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct ChoiceFunction {
-  #[serde(rename = "arguments")]
-  pub arguments: String,
-
-  #[serde(rename = "name")]
-  pub name: String,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct ChoiceLogProb {
-  #[serde(rename = "content")]
-  content: Option<Vec<ChoiceLogProbData>>,
-  // #[serde(rename = "refusal")]
-  // refusal: Option<Vec<ChunkChoiceLogProbData>>,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct ChoiceLogProbData {
-  #[serde(rename = "bytes")]
-  pub bytes: Option<Vec<u8>>,
-
-  #[serde(rename = "logprob")]
-  pub log_prob: Option<f32>,
-
-  #[serde(rename = "token")]
-  pub token: String,
-
-  #[serde(rename = "top_logprobs")]
-  pub top_log_prob: Option<Vec<ChoiceTopLogProb>>,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct ChoiceTopLogProb {
-  #[serde(rename = "bytes")]
-  pub bytes: Vec<u8>,
-
-  #[serde(rename = "logprob")]
-  pub log_prob: Option<f32>,
-
-  #[serde(rename = "token")]
-  pub token: String,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct ErrorRes {
+pub struct QianWenErrRes {
   #[serde(rename = "error")]
-  pub error: ErrorData,
+  pub error: QianWenErrData,
 
   #[serde(rename = "request_id")]
   pub request_id: String,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct ErrorData {
+pub struct QianWenErrData {
+  #[serde(rename = "code")]
+  pub code: String,
+
   #[serde(rename = "message")]
   pub message: String,
 
   #[serde(rename = "type")]
-  pub kind: Option<String>,
+  pub kind: String,
 
-  #[serde(rename = "param")]
+  #[serde(rename = "param", skip_serializing_if = "Option::is_none")]
   pub param: Option<String>,
-
-  #[serde(rename = "code")]
-  pub code: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(untagged)]
 pub enum QianWenChatRes<T> {
-  Failure(ErrorRes),
+  Failure(QianWenErrRes),
   Success(T),
 }
 

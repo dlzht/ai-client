@@ -1,4 +1,7 @@
-use ai_client_common::common::MessageRole;
+use ai_client_common::{
+  common::MessageRole,
+  request::{ResponseFormatParam, StopParam, StreamOptionsParam},
+};
 use schemars::Schema;
 use serde::{Deserialize, Serialize};
 
@@ -37,7 +40,7 @@ pub struct QianWenChatReq {
   presence_penalty: Option<f32>,
 
   #[serde(rename = "response_format", skip_serializing_if = "Option::is_none")]
-  response_format: Option<OutputFormatParam>,
+  response_format: Option<ResponseFormatParam>,
 
   #[serde(rename = "max_input_tokens", skip_serializing_if = "Option::is_none")]
   max_input_tokens: Option<i32>,
@@ -187,7 +190,7 @@ impl QianWenChatReq {
     self
   }
 
-  pub fn with_response_format(mut self, response_format: OutputFormatParam) -> Self {
+  pub fn with_response_format(mut self, response_format: ResponseFormatParam) -> Self {
     self.response_format = Some(response_format);
     self
   }
@@ -708,12 +711,6 @@ pub(crate) struct ToolMessage {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct StreamOptionsParam {
-  #[serde(rename = "include_usage", skip_serializing_if = "Option::is_none")]
-  include_usage: Option<bool>,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum OutputModalityParam {
   #[serde(rename = "text")]
   Text,
@@ -801,56 +798,6 @@ pub enum OutputVoiceFormat {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-#[serde(untagged)]
-pub enum OutputFormatParam {
-  Text(OutputFormatText),
-  JsonObject(OutputFormatJsonObject),
-}
-
-impl OutputFormatParam {
-  pub fn new_text() -> Self {
-    OutputFormatParam::Text(OutputFormatText {
-      kind: "text".to_string(),
-    })
-  }
-
-  pub fn new_json_object() -> Self {
-    OutputFormatParam::JsonObject(OutputFormatJsonObject {
-      kind: "json_object".to_string(),
-    })
-  }
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub(crate) struct OutputFormatText {
-  #[serde(rename = "type")]
-  kind: String,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub(crate) struct OutputFormatJsonObject {
-  #[serde(rename = "type")]
-  kind: String,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub enum StopParam {
-  Text(String),
-  Array(Vec<String>),
-}
-
-impl StopParam {
-  pub fn new_text(text: impl Into<String>) -> Self {
-    StopParam::Text(text.into())
-  }
-
-  pub fn new_array(texts: impl IntoIterator<Item = impl Into<String>>) -> Self {
-    let texts = texts.into_iter().map(|s| s.into()).collect();
-    StopParam::Array(texts)
-  }
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ToolParam {
   #[serde(rename = "type")]
   kind: String,
@@ -884,7 +831,7 @@ pub enum ToolChoicesParam {
 }
 
 impl ToolChoicesParam {
-  pub fn new_force(name: impl Into<String>) -> Self {
+  pub fn new_with_force_function(name: impl Into<String>) -> Self {
     ToolChoicesParam::Force(ToolChoicesForce {
       kind: "function".to_string(),
       function: ToolChoicesForceInner { name: name.into() },

@@ -255,7 +255,7 @@ pub struct GroundingChunkWeb {
   #[serde(rename = "uri", skip_serializing_if = "Option::is_none")]
   uri: Option<String>,
 
-  #[serde(rename = "uri", skip_serializing_if = "Option::is_none")]
+  #[serde(rename = "title", skip_serializing_if = "Option::is_none")]
   title: Option<String>,
 }
 

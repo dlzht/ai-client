@@ -1,6 +1,7 @@
 [workspace]
 members = [
     "ai-client-common",
+    "ai-client-deepseek",
     "ai-client-gemini",
     "ai-client-openai",
     "ai-client-python",

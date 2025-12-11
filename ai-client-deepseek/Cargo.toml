@@ -1,5 +1,5 @@
 [package]
-name = "ai-client-qianwen"
+name = "ai-client-deepseek"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -14,5 +14,7 @@ reqwest.workspace = true
 schemars.workspace = true
 serde.workspace = true
 serde_json.workspace = true
+serde_repr.workspace = true
+snafu.workspace = true
 
 [dev-dependencies]

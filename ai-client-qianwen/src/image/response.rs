@@ -175,7 +175,7 @@ pub struct QianWenImageErr {
 
 #[cfg(test)]
 mod test {
-  use crate::image::response::{QianWenImageRes, SyncTaskOutput, SyncTaskRes};
+  use crate::image::response::{QianWenImageRes, SyncTaskOutput};
 
   #[test]
   fn test_deserialize_res() {

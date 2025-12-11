@@ -13,6 +13,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "ai-client-deepseek"
+version = "0.1.0"
+dependencies = [
+ "ai-client-common",
+ "reqwest",
+ "schemars",
+ "serde",
+ "serde_json",
+ "serde_repr",
+ "snafu",
+]
+
+[[package]]
 name = "ai-client-gemini"
 version = "0.1.0"
 dependencies = [
@@ -53,7 +66,6 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
- "snafu",
 ]
 
 [[package]]

@@ -1,5 +1,6 @@
 [workspace]
 members = [
+    "ai-client-claude",
     "ai-client-common",
     "ai-client-deepseek",
     "ai-client-gemini",
